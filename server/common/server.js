@@ -20,7 +20,7 @@ export default class ExpressServer {
   }
 
   router(routes) {
-    swaggerify(app, routes);
+    //swaggerify(app, routes);
     return this;
   }
 
@@ -30,3 +30,6 @@ export default class ExpressServer {
     return app;
   }
 }
+
+
+
