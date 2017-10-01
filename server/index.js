@@ -30,7 +30,7 @@ app.post('/api/v1/ruleSet', (request, response, next) => {
   response.sendStatus(200);
 });
 app.get('/api/v1/ruleSet', (request, response, next) => {
-  fetch('http://localhost:5984/rulesets/_all_docs?include_docs=true&decending=true&limit=1',
+  fetch('http://localhost:5984/rulesets/_all_docs?include_docs=true&descending=true&limit=1',
     {
       method: 'get',
       headers: {
