@@ -10,10 +10,12 @@ import Express from 'express';
 import './common/env';
 import * as bodyParser from 'body-parser';
 import fetch from 'node-fetch';
+import cors from 'cors';
 
 const app = new Express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 app.post('/api/v1/ruleSet', (request, response, next) => {
   const body = JSON.parse(Object.keys(request.body)[0]);
   console.log(body);

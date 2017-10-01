@@ -89,6 +89,14 @@ var _bodyParser = __webpack_require__(5);
 
 var bodyParser = _interopRequireWildcard(_bodyParser);
 
+var _nodeFetch = __webpack_require__(6);
+
+var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
+
+var _cors = __webpack_require__(7);
+
+var _cors2 = _interopRequireDefault(_cors);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -103,8 +111,28 @@ const app = new _express2.default(); /*import './common/env';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use('*', (request, response, next) => {
-  console.log(request.body);
+app.use((0, _cors2.default)());
+app.post('/api/v1/ruleSet', (request, response, next) => {
+  const body = JSON.parse(Object.keys(request.body)[0]);
+  console.log(body);
+  (0, _nodeFetch2.default)('http://localhost:5984/rulesets', {
+    method: 'post',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify(body) });
+  response.sendStatus(200);
+});
+app.get('/api/v1/ruleSet', (request, response, next) => {
+  (0, _nodeFetch2.default)('http://localhost:5984/rulesets/_all_docs?include_docs=true&decending=true&limit=1', {
+    method: 'get',
+    headers: {
+      'Content-type': 'application/json'
+    } }).then(couchResponse => {
+    return couchResponse.json();
+  }).then(json => {
+    response.send(json.rows[0].doc);
+  });
 });
 
 app.listen(process.env.PORT);
@@ -141,6 +169,18 @@ module.exports = require("dotenv");
 /***/ (function(module, exports) {
 
 module.exports = require("body-parser");
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("node-fetch");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = require("cors");
 
 /***/ })
 /******/ ]);
